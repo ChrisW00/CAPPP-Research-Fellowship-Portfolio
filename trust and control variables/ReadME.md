@@ -8,7 +8,7 @@ Axios. (2021). Axios/Ipsos Coronavirus Index [Dataset]. Cornell University, Itha
 
 Dong, E., Du, H., & Gardner, L. (2020). An interactive web-based dashboard to track COVID-19 in Real time. The Lancet Infectious Diseases, 20(5), 533-534. doi:10.1016/s1473-3099(20)30120-1. 
 
-Hale, T., Angrist, N., Goldszmidt, R., Kira, B., Petherick, A., Phillips, T., . . . Tatlow, H. (2021). A global panel database of pandemic policies (Oxford Covid-19 Government response tracker). Nature Human Behaviour, 5(4), 529-538. doi:10.1038/s41562-021-01079-8.  
+Hale, T., Angrist, N., Goldszmidt, R., Kira, B., Petherick, A., Phillips, T., . . . Tatlow, H. (2021). A global panel database of pandemic policies (Oxford Covid-19 Government response tracker). Nature Human Behaviour, 5(4), 529-538. (doi:10.1038/s41562-021-01079-8).  
 
 Labor Force Statistics from the Current Population Survey Seasonally Adjusted Unemployment Rate [xlsx]. (2022, January 07). Bureau of Labor Statistics. 
 
