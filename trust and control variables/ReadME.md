@@ -2,13 +2,13 @@ I have uploaded all necessary data files, but for my code to work you may need t
 
  
 
-## Sources  
+# Sources  
 
 Axios. (2021). Axios/Ipsos Coronavirus Index [Dataset]. Cornell University, Ithaca, NY: Roper Center for Public Opinion Research. https://ropercenter.cornell.edu/ipoll/search?collection=LSM&contains=SPSS&end=2021-02-01&org=30c1032b-fa6d-4c44-a3c0-6de23bf9e935&org=70f17464-83e1-4803-933a-a5c24ee7bd86&start=2020-03-20&tab=STUDY&topic=1f2f13b8-8249-4dd3-a980-5a1db99bf3d9.   
 
 Dong, E., Du, H., & Gardner, L. (2020). An interactive web-based dashboard to track COVID-19 in Real time. The Lancet Infectious Diseases, 20(5), 533-534. doi:10.1016/s1473-3099(20)30120-1. 
 
-Hale, T., Angrist, N., Goldszmidt, R., Kira, B., Petherick, A., Phillips, T., . . . Tatlow, H. (2021). A global panel database of pandemic policies (Oxford Covid-19 Government response tracker). Nature Human Behaviour, 5(4), 529-538. (doi:10.1038/s41562-021-01079-8).  
+Hale, T., Angrist, N., Goldszmidt, R., Kira, B., Petherick, A., Phillips, T., . . . Tatlow, H. (2021). A global panel database of pandemic policies (Oxford Covid-19 Government response tracker). Nature Human Behaviour, 5(4), 529-538. doi:10.1038/s41562-021-01079-8.  
 
 Labor Force Statistics from the Current Population Survey Seasonally Adjusted Unemployment Rate [xlsx]. (2022, January 07). Bureau of Labor Statistics. 
 
