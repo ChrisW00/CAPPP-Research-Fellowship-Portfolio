@@ -1,0 +1,1 @@
+This folder contains several lab assignments from my fellowship to practice data wrangling, data visualization, and statistical skills before I could start working with real data for my research project. Homework 2 and Lab 4 focus on data wrangling and graphical visualization while Lab 8 focuses on regression analyses. 
