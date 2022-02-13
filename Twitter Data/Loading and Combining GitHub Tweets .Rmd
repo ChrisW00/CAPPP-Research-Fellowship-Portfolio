@@ -1,0 +1,339 @@
+---
+title: "Loading and Combining GitHub Tweets"
+author: "Christopher Wagner"
+date: "11/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+ library(rtweet)
+library(tibble)
+library(ggplot2)
+library(RCurl)
+library(dplyr)
+
+
+consumer_key<- "@"
+ consumer_secret<-"@"
+ access_token<- "@"
+access_secret<- "@"
+
+token <- create_token(
+
+  app = "@",
+
+  consumer_key,
+
+  consumer_secret ,
+
+  access_token,
+
+  access_secret)
+options(scipen=999)
+
+coAID_FakeNewsTweets_May-July2020
+ fpn <- "C:/Users/wagne/Downloads/NewsFakeCOVID-19_tweets.csv" #specify where tweets are on hard drive
+
+tweet_list <- read.csv(file = fpn,col.names = c('index', 'status_id'), colClasses = c('integer', 'character')) #assign to variable and load to memory
+
+
+ 
+
+fake_tweets <- lookup_statuses(statuses =  tweet_list$status_id, parse = TRUE) #gets/gather data from twitter
+
+
+
+
+fpn <- "C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\NewsFakeCOVID-19_tweets.rds" #saves to variable for ease of use 
+saveRDS(object=fake_tweets, file=fpn) #saves to RDS and hard drive
+
+
+
+```
+
+```{r Fake News tweet coAID from Jan-May 2020}
+
+consumer_key<- "@"
+ consumer_secret<-"@"
+ access_token<- "@"
+access_secret<- "@"
+
+token <- create_token(
+
+  app = "@",
+
+  consumer_key,
+
+  consumer_secret ,
+
+  access_token,
+
+  access_secret)
+ab<-"C:/Users/wagne/Downloads/NewsFakeCOVID-19_tweets - NewsFakeCOVID-19_tweets (1).csv"
+
+ab_list<-read.csv(file = ab,col.names = c('index', 'status_id'), colClasses = c('integer', 'character')) 
+
+ab_load_TweetList<-lookup_statuses(statuses =  ab_list$status_id, parse = TRUE)
+View(ab_load_TweetList)
+
+ab<-"C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\NewsFakeCOVID-19_tweets - NewsFakeCOVID-19_tweets (1).rds"
+
+saveRDS(object=ab_load_TweetList, file=ab)
+
+```
+
+```{r coAID_FakeClaimsTweets_Jan-May2020}
+ac<-"C:/Users/wagne/Downloads/coAID_FakeClaimsTweets_Jan-May2020.csv"
+
+ac_list<-read.csv(file = ac,col.names = c('index', 'status_id'), colClasses = c('integer', 'character')) 
+
+ac_load_TweetList<-lookup_statuses(statuses =  ac_list$status_id, parse = TRUE)
+View(ac_load_TweetList)
+
+ac<-"C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\coAID_FakeClaimsTweets_Jan-May2020.rds"
+
+saveRDS(object=ac_load_TweetList, file=ac)
+
+```
+
+```{r coAID_RealClaimsTweets_Jan-May2020}
+ad<-"C:/Users/wagne/Downloads/coAID_RealClaimsTweets_Jan-May2020.csv"
+
+ad_list<-read.csv(file = ad,col.names = c('index', 'status_id'), colClasses = c('integer', 'character')) 
+
+ad_load_TweetList<-lookup_statuses(statuses =  ad_list$status_id, parse = TRUE)
+View(ad_load_TweetList)
+
+ad<-"C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\coAID_RealClaimsTweets_Jan-May2020.rds"
+
+saveRDS(object=ad_load_TweetList, file=ad)
+```
+
+```{r coAID_RealNewsTweets_Jan-May2020}
+ae<-"C:/Users/wagne/Downloads/coAID_RealNewsTweets_Jan-May2020.csv"
+
+ae_list<-read.csv(file = ae,col.names = c('index', 'status_id'), colClasses = c('integer', 'character')) 
+
+ae_load_TweetList<-lookup_statuses(statuses =  ae_list$status_id, parse = TRUE)
+View(ae_load_TweetList)
+
+ae<-"C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\coAID_RealNewsTweets_Jan-May2020.rds"
+
+saveRDS(object=ae_load_TweetList, file=ae)
+```
+
+```{r coAID_FakeClaimsTweets_May-July2020}
+af<-"C:/Users/wagne/Downloads/coAID_FakeClaimsTweets_May-July2020.csv"
+
+af_list<-read.csv(file = af,col.names = c('index', 'status_id'), colClasses = c('integer', 'character')) 
+
+af_load_TweetList<-lookup_statuses(statuses =  af_list$status_id, parse = TRUE)
+View(af_load_TweetList)
+
+af<-"C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\coAID_FakeClaimsTweets_May-July2020.rds"
+
+saveRDS(object=af_load_TweetList, file=af)
+```
+
+```{r coAID_RealNewsTweets_May-July2020}
+ag<-"C:/Users/wagne/Downloads/coAID_RealNewsTweets_May-July2020.csv"
+
+ag_list<-read.csv(file = ag,col.names = c('index', 'status_id'), colClasses = c('integer', 'character')) 
+
+ag_load_TweetList<-lookup_statuses(statuses =  ag_list$status_id, parse = TRUE)
+
+View(ag_load_TweetList)
+
+ag<-"C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\coAID_RealNewsTweets_May-July2020.rds"
+
+saveRDS(object=ag_load_TweetList, file=ag)
+```
+
+```{r coAID_RealClaimsTweets_May-July2020}
+ah<-"C:/Users/wagne/Downloads/coAID_RealClaimsTweets_May-July2020.csv"
+
+ah_list<-read.csv(file = ah,col.names = c('index', 'status_id'), colClasses = c('integer', 'character')) 
+
+ah_load_TweetList<-lookup_statuses(statuses =  ah_list$status_id, parse = TRUE)
+
+View(ah_load_TweetList)
+
+ah<-"C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\coAID_RealClaimsTweets_May-July2020.rds"
+
+saveRDS(object=ah_load_TweetList, file=ah)
+```
+
+```{r coAID_FakeNewsTweets_July-Sept2020}
+ai<-"C:/Users/wagne/Downloads/coAID_FakeNewsTweets_July-Sept2020.csv"
+
+ai_list<-read.csv(file = ai,col.names = c('index', 'status_id'), colClasses = c('integer', 'character')) 
+
+ai_load_TweetList<-lookup_statuses(statuses =  ai_list$status_id, parse = TRUE)
+
+View(ai_load_TweetList)
+
+ai<-"C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\coAID_FakeNewsTweets_July-Sept2020.rds"
+
+saveRDS(object=ai_load_TweetList, file=ai)
+```
+
+```{r coAID_RealClaimsTweets_July-Sept2020}
+aj<-"C:/Users/wagne/Downloads/coAID_RealClaimsTweets_July-Sept2020.csv"
+
+aj_list<-read.csv(file = aj,col.names = c('index', 'status_id'), colClasses = c('integer', 'character')) 
+
+aj_load_TweetList<-lookup_statuses(statuses =  aj_list$status_id, parse = TRUE)
+
+View(aj_load_TweetList)
+
+aj<-"C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\coAID_RealClaimsTweets_July-Sept2020.rds"
+
+saveRDS(object=aj_load_TweetList, file=aj)
+```
+
+```{r coAID_RealNewsTweets_July-Sept2020}
+ak<-"C:/Users/wagne/Downloads/coAID_RealNewsTweets_July-Sept2020.csv"
+
+ak_list<-read.csv(file = ak,col.names = c('index', 'status_id'), colClasses = c('integer', 'character')) 
+
+ak_load_TweetList<-lookup_statuses(statuses =  ak_list$status_id, parse = TRUE)
+
+View(ak_load_TweetList)
+
+ak<-"C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\coAID_RealNewsTweets_July-Sept2020.rds"
+
+saveRDS(object=ak_load_TweetList, file=ak)
+```
+
+```{r coAID_FakeNewsTweets_Sept-Nov2020}
+al<-"C:/Users/wagne/Downloads/coAID_FakeNewsTweets_Sept-Nov2020.csv"
+
+al_list<-read.csv(file = al,col.names = c('index', 'status_id'), colClasses = c('integer', 'character')) 
+
+al_load_TweetList<-lookup_statuses(statuses =  al_list$status_id, parse = TRUE)
+
+View(al_load_TweetList)
+
+al<-"C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\coAID_FakeNewsTweets_Sept-Nov2020.rds"
+
+saveRDS(object=al_load_TweetList, file=al)
+```
+
+```{r coAID_RealClaimsTweets_Sept-Nov2020}
+am<-"C:/Users/wagne/Downloads/coAID_RealClaimsTweets_Sept-Nov2020.csv"
+
+am_list<-read.csv(file = am,col.names = c('index', 'status_id'), colClasses = c('integer', 'character')) 
+
+am_load_TweetList<-lookup_statuses(statuses =  am_list$status_id, parse = TRUE)
+
+View(am_load_TweetList)
+
+am<-"C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\coAID_RealClaimsTweets_Sept-Nov2020.rds"
+
+saveRDS(object=am_load_TweetList, file=am)
+```
+
+
+
+```{r coAID_RealNewsTweets_Sept-Nov2020}
+a<-"C:/Users/wagne/Downloads/coAID_RealNewsTweets_Sept-Nov2020.csv"
+
+a_list<-read.csv(file = a,col.names = c('index', 'status_id'), colClasses = c('integer', 'character')) 
+
+a_load_TweetList<-lookup_statuses(statuses =  a_list$status_id, parse = TRUE)
+
+View(a_load_TweetList)
+
+a<-"C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\coAID_RealNewsTweets_Sept-Nov2020.rds"
+
+saveRDS(object=a_load_TweetList, file=a)
+```
+
+
+```{r fake antivax}
+FA<-"C:/Users/wagne/Downloads/fake_antivax_nov-july.csv"
+
+FA_list<- read.csv(file = FA, col.names =  'status_id', colClasses =  'character') 
+
+FA_Tweets<- lookup_statuses(statuses =  FA_list$status_id, parse = TRUE) 
+
+anti_vax_fake<- "C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\FA_Tweets.rds"  
+saveRDS(object=FA_Tweets, file=anti_vax_fake)
+```
+
+```{r real vax}
+RA<-"C:/Users/wagne/Downloads/Real_vax.csv"
+
+RA_list<-read.csv(file = RA, col.names =  'status_id', colClasses =  'character') 
+
+RA_Tweets<- lookup_statuses(statuses =  RA_list$status_id, parse = TRUE) 
+
+vax_Real<- "C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\RA_Tweets.rds" 
+saveRDS(object=RA_Tweets, file=vax_Real)
+```
+
+
+```{r Load CMU}
+CMU<-"C:/Users/wagne/Downloads/CMU_tweet_id_misinfo.csv"
+
+CMU_list<-read.csv(file = CMU, col.names =  'status_id', colClasses =  'character') 
+
+CMU_Tweets<- lookup_statuses(statuses =  CMU_list$status_id, parse = TRUE) 
+
+CMU <- "C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\CMU_Tweets.rds"
+saveRDS(object=CMU_Tweets, file=CMU) 
+```
+
+
+```{r load video tweets}
+FP<-"C:/Users/wagne/Downloads/video_tweet.csv"
+
+FP_list<-read.csv(file = FP, col.names =  'status_ids', colClasses =  'character') 
+
+FP_list<-separate_rows(FP_list, 'status_ids', sep = ",", convert = TRUE)
+Video_Tweets2<- lookup_statuses(statuses =  FP_list$status_ids, parse = TRUE) 
+
+FP <- "C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\Video_Tweets.rds" 
+saveRDS(object=Video_Tweets, file=FP) 
+
+
+
+FP_list<-separate_rows(FP_list, 'status_ids', sep = ",", convert = TRUE)
+FP_list_P<-FP_list
+FP_list_p<-slice(FP_list, 90001:180000)
+Video_Tweets2<- lookup_statuses(statuses =  FP_list_p$status_ids, parse = TRUE) 
+
+FPA<- "C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\Video_Tweets2.rds" 
+
+FO<-slice(FP_list, 180001:257326)
+Video_Tweets3<- lookup_statuses(statuses =  FO$status_ids, parse = TRUE)
+FOO<-"C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\Video_Tweets3.rds"
+saveRDS(object=Video_Tweets3, file=FOO) 
+
+video_combined<-rbind(Video_Tweets, Video_Tweets2, Video_Tweets3)
+video_combined<-filter(video_combined, created_at>= '2020-01-15 00:11:12')
+
+FY<-"C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\video_combined.rds"
+saveRDS(object=video_combined, file=FY) 
+```
+
+```{r false tweets combined }
+All_false<-rbind(CMU_Tweets, `Antivax_2020-2021`, video_combined, coAID_Fake_combined)
+All_false<- All_false%>%add_column(Veracity= "False")
+Total_fake<- "C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\ALL_false.RDS"
+saveRDS(object = All_false, file= Total_fake)
+```
+
+```{r true tweets combined }
+coAID_Real<-filter(coAID_RealCombined, created_at>= '2020-01-15 00:11:12')
+True_tweets_all<-rbind(coAID_Real, `Vax_real_tweets_2020-21`)
+True_tweets_all<-True_tweets_all%>%add_column(Veracity= "TRUE")
+Total_true<-"C:\\Users\\wagne\\OneDrive - UW\\CAPPP Program\\R\\Twitter\\All_true_tweets.RDS"
+saveRDS(object=True_tweets_all, file= Total_true)
+glimpse(True_tweets_all)
+```
+
