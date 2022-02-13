@@ -1,0 +1,138 @@
+---
+title: "“CAPPP_Wagner_Lab 4 & 5"
+author: "Christopher Wagner"
+date: "11/5/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r load packages}
+library("dplyr")
+library("gapminder")
+library("magrittr")
+library("ggplot2")
+library("tidyr")
+glimpse(gapminder)
+```
+ 
+
+1. Create a new variable (a column) in the gapminder data that is a unique identification
+code for each case in the format “country_year” (i.e. Canada_1952). Save (only) the list of
+unique codes as a new object called “ID_list”. How many unique IDs are there?
+```{r}
+ID_list<-gapminder%>% mutate(country_year=paste(year, country, sep="_"))%>%select(country_year)
+View(ID_list)
+
+```
+There are 1704 unique ID's since all we did is add a new variable to each observation. 
+
+
+2. Subset your data to a dataframe called “pop_test” that contains only the populations of
+Asian and African countries in 1952 through 1967. Next, print (in the console) the
+summary statistics for the variable “pop” for this subset of cases (minimum, median, mean,
+maximum, and difference between the min and the max). All these numbers should appear
+in a single table, printed in the console. 
+```{r}
+pop_test<-gapminder %>%
+  filter(continent == "Asia"| continent== "Africa",  year >= 1952, year<= 1967) %>%
+  group_by(country)%>%
+  summarize(min_pop= min(pop), max_pop= max(pop), mean_pop= mean(pop),median_pop= median(pop))%>%
+  mutate(range_pop= max_pop - min_pop)
+pop_test
+
+```
+3. Which country experienced the greatest net change (in raw dollars) in GDP in the six year period from 1972-1977 (inclusive)? Which country experienced the greatest change (again, in raw dollars) in GDP per capita in the same period? Show the code for how you calculated your answers. Hint: depending on how you approach this task, you may find the additional dplyr function “arrange” helpful here.
+```{r}
+GDP_gap <- gapminder %>%
+  mutate(gdp = pop *gdpPercap)
+ 
+
+
+GDP_Change <- GDP_gap %>%filter(year >= 1972, year <= 1977) %>% 
+   select("gdp","country") %>% 
+   group_by(country) %>%
+   summarize(min_gdp = min(gdp),
+            max_gdp = max(gdp)) %>%
+   mutate(GDP_Range = max_gdp - min_gdp) 
+
+
+View(GDP_Change)
+max(GDP_Change$GDP_Range)
+
+GDP_perCap_Change<-GDP_gap %>% filter(year >= 1972, year <= 1977) %>% 
+   select("gdpPercap","country") %>% 
+   group_by(country) %>%
+   summarize(min_gdpPercap = min(gdpPercap),
+            max_gdpPercap = max(gdpPercap)) %>%
+   mutate(gdpPercap_Range = max_gdpPercap - min_gdpPercap) 
+
+View(GDP_perCap_Change)
+max(GDP_perCap_Change$gdpPercap_Range)
+```
+The United States had the greatest change in GDP during the six year period from 1972-1977, with $724,732,708,017 (USD). his time measurement/ limitation is inclusive because we are including the data  in 1972 and in 1977. While Kuwait had the greatest change in GDP per Capita during the six year period from 1972-1977, with 50,082.39 (USD). I was able to find both answers by  looking at the max values and pressing the arrow on the range column so that the data would be sorted with teh countries from greatest to  smallest change in range. 
+
+
+
+4. For each continent, what was the average GDP per capita for each year in the data? Present the data in a table in a way that is readable.
+```{r}
+Avg_GDP_PerCapita<- gapminder %>% mutate(avg_gdp_cap= gdpPercap)%>% group_by(continent, year) %>% select(year, avg_gdp_cap)%>% summarize(avg_gdp_cap= mean(avg_gdp_cap))
+
+
+View(Avg_GDP_PerCapita)
+
+```
+5. Next, present the data from question four with ggplot2 in a single attractive and intelligible graph that makes sense (and is easier to read than your table!). In 2-3 sentences, explain what your graph means and why it is a useful visual representation. Remember that a good graph should have a title and the y and x axes should be labeled.
+```{r}
+Avg_GDP_PerCapita_plot1 <- ggplot(Avg_GDP_PerCapita, aes(x = year, y = avg_gdp_cap)) +
+ geom_jitter(aes(color = continent), size = 3) +
+  geom_smooth(color = "black") +
+  theme_bw(base_size = 14) +                       
+  labs(x = "Year", y = "Average GDP per capita", 
+       title = "Relationship Between GDP (per capita) and Year") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_colour_discrete(name = "Continent")
+  scale_y_continuous(breaks=c(10000, 20000, 30000),
+                     labels=c("$10,000", "$20,000", "$30,000")) 
+Avg_GDP_PerCapita_plot1
+
+ggsave(filename = "lab4_plot1.png", plot = Avg_GDP_PerCapita_plot1)
+```
+I made a standard point graph to show the individual observations for each continent in a organized manner. This graph shows an increase in Average GDP per capita since 1950 for all of the continents except Africa, which has remained relatively the same.  
+
+
+6. Next, present the data from question four in a different way than you did in question five. You must change more than colors – you must present the findings using a different type of “geom.” In 2-3 sentences, explain what your graph means and why it is a useful visual representation.
+```{r}
+
+Avg_GDP_PerCapita_plot2 <- ggplot(Avg_GDP_PerCapita, aes(x = year, y = avg_gdp_cap)) +
+  geom_line(aes(color = continent), size = .50) + geom_point(aes(color = continent), size = 1.5)+
+  geom_smooth(color= "black") +
+  theme_linedraw(base_size = 14) +                       
+  labs(x = "Year", y = "Average GDP per capita", 
+       title = "Relationship Between GDP (per capita) and Year") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_colour_discrete(name = "Continent")
+  scale_y_continuous(breaks=c(10000, 20000, 30000),
+                     labels=c("$10,000", "$20,000", "$30,000")) 
+Avg_GDP_PerCapita_plot2
+
+ggsave(filename = "lab4_plot2.png", plot = Avg_GDP_PerCapita_plot2)
+```
+I used a line point graph to highlight the change of GDP per capita over time, and when continents had the about the same GDP per capita. This graph shows that there has been an overall increase in GDP per capita  across all the continents since 1950. 
+
+
+Question 7: Explain in your own words (in one paragraph on each) what the “gather” and “spread” functions in tidyr do.
+
+The spread function in Tidyr takes a "key" column and a "value" and combines/ distributes them accordingly. For example, lets say that we are working with a data set and in our key column every other observation is "Money Spent", and the other observations in the Key column says "Money Earned". Also, lets say right next to the key column in this data frame is a value column, in which each observational value listed below corresponds to the observations in the key column. So the value in the first row could be -800 USD which is money spent, and the second row that shows 900 USD would be money earned. The spread function will replace the "key" column with "Money Spent" which will show all the values for money spent, and the "value" column will be replaced with "Money Earned" which will  show all the values for money spent.   
+
+The gather function does the exact opposite of what the spread function does. Rather than explaining this in a complicated abstract way what this function does, I am just going to use an example. Lets say that we are working with a data frame that has the number of undergraduates  admitted into each department at UW for 2019 and 2020. The first column would be "Departments", the second would be "2019", and the third would be "2020". Under the 2019 and 2020 columns the number of undergraduates admitted into the corresponding  department would be the value listed under each column year. This is not the most productive way to read this type of data. So, we would use the gather function to to replace the "2019" column with a key column labelled "year", in which every other observation would be 2019 and all the other observations in this column would be 2020. The gather function would also replace the "2020" column with a value column labelled "Admittance" which list the number of admitted students for the corresponding year and department observations. This allows us to compare the  difference in values between each year for each department on a individual level by just glancing at the data. 
+
+Question 8: Begin cleaning your own data! You should now have at least one set of data for one of your variables (IV, DV, or a relevant control variable) that you can begin putting into order (if not, come talk to me or Prof. Thorpe). Write up a short report (1-2 paragraphs) on the state of your data: its format and structure, your cleaning tasks or other problems you foresee with the data, what you might call your observations (i.e. “country-year”), and how many rows (i.e. cases) you have.
+
+This week I have loaded all of my COVID-19 twitter data into R from the CoAID data set. This data set is still in its raw form in rds files. There are 14 RDS file all of which have 90 variables and contain a different number of observations. I don't know what all of these variables mean I will have to use the Twitter code book to figure out what variables I want to keep and which ones I don't. Just by glancing the the data I do see that the user engagement measurements I want are definitely there,like the number of likes. However, there is other information that I was able to obtain that I didn't even think about that might be useful in my research, like seeing the most common "mentions" and how that varies between true and false posts (like do posts that contain tag a "verified" user generate more user activity?). The RDS files are grouped into four different time intervals in 2020 for January-May, May-July, July-September, and September-November.The files of each time interval is then categorized by the set of tweets being true or fake (false), and whether the tweets within that grouping are claims or news articles. I think I am going to combine all of my "News" and "claims" files while keeping everything organized by time interval and real/fake. I have noticed with this dataset that the files started containing less observations for real and fake tweets after the May-July time interval. I have also noticed that there are significantly less false tweets than there is true tweets for each time interval and posting type. This is the case because the researchers that created this data set did not generate a random sample. They used the WHO website and Medical News Today website to collect common news titles and claims that are both true and false. They then used the Twitter API and a newspaper package in python to find the similar and exact posts with these claims/ News headlines. The researchers also verified the validity of each posts using several fact checking sites. The curation of this data set seems to be very time consuming and intense so I'm guessing this has something to do with the inconsistency in the number of posts. Alternatively this could be a sign of poor methodology, since each time interval  contains a different amount of tweets, in which the range varies greatly. However, to compensate for this I think I should take a random sample of 10,000 fake tweets and 10,000 real tweets, since I am mainly interested in the different levels of user engagement between true and false posts. I believe I have about 15,000 fake tweets and  about 200,000 real tweets (each tweet has its own row so this is my observation). I have several other COVID-19 data sets that I can merge but most of them only contain false tweets and the tweet IDs may repeat between data sets, which could be problematic if I am unable to delete duplicate Tweet IDs in R. I have also found another data set that has 8000 false COVID-19 YouTube videos which has some user engagement information. However, I need to talk to you and/or Professor Thorpe about that data set because it has some cross platform analysis that could be useful, but I have yet to find another YouTube data set like this for  true COVID-19 social media posts. 
+
+I have given you access to my data set on github. It's a violation of the terms and services to publish any twitter data on an individual level since users can be easily identified. 
+

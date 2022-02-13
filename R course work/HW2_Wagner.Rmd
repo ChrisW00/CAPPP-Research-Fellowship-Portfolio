@@ -1,0 +1,168 @@
+---
+title: "Wagner_HW2"
+author: "Christopher Wagner"
+collaboration: "Bella"
+date: "11/17/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library("dplyr")
+library("ggplot2")
+library("tidyr")
+library("gapminder")
+```
+
+Question 1
+
+Save the gapminder data as an object called “data.” Create two new variables (two new
+columns) in “data.” The first should be called “econ” and the second should be called
+“econ_value.” The variables will tell you (with made-up values) whether or not a country was in
+the World Trade Organization in a given year, and whether or not they had a loan with the
+International Monetary Fund. Fill in all rows of “econ” with alternating values of “IMF_loan”
+and “WTO_member,” as shown in the snippet below. Fill in all rows of “econ_value” with a
+repeating pattern “0, 1, 1”. Please note, you should automate this process using R, rather than
+filling in any of these values manually (Hint: the function “rep_len” will be useful to you here).
+```{r}
+econ_value<-rep(0:1, c(1,2))
+econ<-c("IMF_loan", "WTO_member")
+
+data.<-gapminder%>%mutate(econ=rep_len(econ, 1704), econ_value=rep_len(econ_value, length.out = 1704))
+
+
+```
+Next, clean this data using the tidyr function “spread” so that your data looks like this snippet:
+```{r}
+data.<-data.%>% spread(econ, econ_value)
+```
+Next, remove both of these new columns that you've created from “data” object.
+```{r}
+data.<-select(data., -c(econ, econ_value))
+```
+
+Question 2
+
+Research Question: did age impact survival among the passengers on the ill-fated Titanic?
+
+First, load the .csv of Titanic data, setting header to true and strings as factors to false.
+```{r}
+titanic<-read.csv("titanic.csv", header = TRUE, stringsAsFactors = FALSE)
+```
+
+Next, calculate the mean age and standard deviation of those who survived and the mean age
+and standard deviation of those who did not. Print your results in a single, clean table.
+```{r}
+#1 = survival, 0= dead
+
+ titanic%>% group_by(survived)%>%group_by(survived)%>%summarise(mean(age),sd(age))
+```
+
+Next, plot two histograms or density plots on top of each other – i.e. two histograms in one plot
+– where one histogram shows the distribution of ages of those who lived and one shows the
+distribution of ages of those who died.
+```{r}
+Lived<-titanic%>%filter(survived== 1)
+Died<-titanic%>%filter(survived== 0)
+Survived_age_graph<-ggplot(titanic, aes(x=age, fill= factor(survived)))+ geom_density(alpha=.5, position="identity")+  geom_vline(xintercept = mean(Lived$age), color = "red") +
+  geom_vline(xintercept = mean(Died$age), color = "blue")
+Survived_age_graph
+ggsave(filename = "Survived_age_graph.png", plot = Survived_age_graph)
+```
+
+Next, create two new data frames – one called “lived” and one called “died” – separating
+the data into those who lived and those who did not. What is the difference in the mean
+ages of each group?
+```{r}
+mean(Died$age)-mean(Lived$age)
+```
+The difference in the mean between the age of each group is 1.73014.
+
+Finally, calculate a two-sample t-test for the mean ages of each group. How confident are we
+that we can reject the null hypothesis that the two population means are, in fact, equal? What is
+our margin of error, with 95% confidence, around the difference in means? Explain in a
+paragraph – in substantive terms that a person who doesn't know anything about statistics
+would understand – the results you have found. What is the answer to our research question
+about whether age and survival are related?
+```{r}
+t.test(Died$age,Lived$age)
+```
+Since the p-value is greater than .05 and the T value is relatively low, we fail to reject the null hypothesis and can conclude that age played an insignificant role in titanic deaths. 
+With a 95% confidence interval our margin of error is 5%. Thus, if the titanic were to happen every year with different passengers but have the same amount, 95% of the time the difference in the mean age for people who survived and those died would fall between   -0.1966269  and 3.6569075. Furthermore, the lowest bound in the confidence range, -0.1966269, falls below zero which is also why we fail to reject the null, as our confidence should never be zero let alone be negative. Therefore, we can conclude that age doesn't impact the rate of survival on the Titanic. 
+
+
+Question 3
+Using your own data set for one of your variables, plot a histogram of its distribution. Divide it
+into two groups of interest – this is just an exercise, so they don't need to be groups necessarily relevant to your eventual analysis – and plot two overlaid histograms.
+```{r}
+Fake_Tweets<- readRDS("D:/Twitter coAID/coAID_Fake_combined.rds")
+
+#Fake_Tweet_count<-Fake_Tweets%>%select( favorite_count)
+Twitter_Apple<-Fake_Tweets%>%select(source, favorite_count)%>%filter(source== "Twitter for iPhone", favorite_count < 500, favorite_count > 10)
+Twitter_Android<-Fake_Tweets%>%select(source, favorite_count)%>%filter(source == "Twitter for Android", favorite_count < 500, favorite_count > 10)
+phone_tweets<-Twitter_Apple%>%full_join(Twitter_Android)
+
+phone_graph<-ggplot(phone_tweets, aes(x= favorite_count, fill= factor(source)))+ geom_histogram( position="identity", alpha=.3)+  geom_vline(xintercept = mean(Twitter_Apple$favorite_count), color = "red")+ geom_vline(xintercept = mean(Twitter_Android$favorite_count), color = "blue")
+phone_graph
+
+ggsave(filename = "phone_graph_q3.png", plot= phone_graph)
+
+```
+Question 4
+Write out a table with all of your dependent and independent variables. Describe where you will
+get each dataset, report whether you have downloaded or collected the data set, describe what
+steps you will need to complete in cleaning, and report when you expect (approximately) to have
+completed those tasks – i.e. when you expect to have all of your cleaned data for your
+dependent and independent variables.
+```{r}
+data_set_status<-data.frame(
+  Variable_name= c("Public Trust", "Engagement Levels of COVID_-19 Tweets (True & False)"),
+  Variable_type= c("Dependent Ordinal Categorical ", "Independent Continuous Numerical"),
+  Source= c("Axios-Ipsos Coronavirus Index; Pew Research is the only other orgnization thats measure public trust prior t MArch 2021 but I am still working on getting access to their raw data files(I have written everything based off of Axios-Ipsos since I have easy access to their files", "CoAID: COVID-19 Healthcare Misinformation Dataset; (currently still looking at some additional datasets but have not had a chance to collect Tweet ID's, will do before the start of winter quarter. All of my cleaning steps would be the same as the dataframes are pretty clean it's mostly just a matter of deleting columns and merging files)"),
+  Cleaning= c( "Delete unnecessary columns, add survey wave column, convert the percentages for respondent answers to quantities of the sample, combine two rows, delete row of respondents that skipped question and subtract from sample size,  merge data files from all 30 waves, quantify survey responses on scale of 0-3, create four additional columns (one for each score),  use spread function so that each survey question for each wave is its own observation (i.e. W2_Govt_Response_Concern), create additional table with Confidence index for each wave in which all the observations in each column are added together and multiplied accordingly. For some of the tasks I don’t know which order I should complete things in terms of efficiency and formatting/coding limitations.", "Delete unnecessary columns, add Veracity column labelling each observation True/False, create engagement column index in which I will add together the number of likes, Hashtags, retweets, and mentions for each post (I need to figure out how to get help on this over break as because the hashtags and mentions are not quantified they’re instead shown as “c(#COVID, #Vaccine…)”), Combine true and false data frames (Or do I want to keep these separate for my regression analysis?)." ),
+  Complete_by= c("01/16/2022", "01/16/2021; (I am overestimating on how much time this will take but plan on working on this  a lot over a break as it provides me an excuse to 'escape' my family/mother during my week and a half long visit. I am assuming by 'clean' that our data needs to be ready  to go for regression analysis which will be used in our papers)" ),
+  Downloaded= c("No, I only downloaded two files to see what I am working with in terms of cleaning", "Partially, all of my coAID tweets are downloaded and merged accordingly" )
+  
+)
+View(data_set_status)
+
+data_set_status
+
+data_set_status$Variable_name
+
+data_set_status$Variable_type
+
+data_set_status$Source
+
+data_set_status$Cleaning
+
+data_set_status$Complete_by
+
+data_set_status$Downloaded
+#1 is Public Trust my Dependent Variable
+#2 is Engagement levels of Tweets my Independent Variable
+```
+
+Question 5: 
+Begin to think about “control variables” – the kinds of differences across your cases that could
+influence the relationship you are hypothesizing between your independent and dependent
+variables. Make a list of five things you would like to control for across your dependent
+variable cases and give a 1-2 sentence justification of each.
+
+1.**Partisanship**
+    People are more likely to trust the government when their party is in power, which imposes on the role that misinformation on social media plays in trust perceptions. I want to control for this also because there was a change in partisan power during the pandemic after Biden was elected President. Also, fake news tends to target Republicans more than Democrats. 
+
+2.**Economy (GDP and Unemployment rate)**
+    The state of the economy heavily influences how people view and trust the government. Also, since there were economic socks and tons of people on unemployment its vital that I account for     this. 
+
+3.**Education Status**
+    People with less education are more likely to believe in misinformation which in turn will affect government trust. People with more education tend to be more politically engaged on social media and are likely to fall into a filter bubble which causes distorts their perception of their political opponents. Also, education plays a role in the ability to comprehend (political) information.
+
+4.**State of Residence and State COVID Restrictions and Number of Deaths at time of Survey**
+    Each State had a different COVID-19 response which can in turn affect how citizens trust their state government. For example, anti-maskers would trust Florida State more than they would Washington State government in terms of COVID-19 response. 
+
+5.**Age** 
+    People who are older are more susceptible to believing misinformation on social media as they have a harder time spotting fake News, like a photoshopped picture. This in turn affects the formation of trust judgements, since I am not interested in how belief in misinformation varies across age groups I need to control for this element, as cognition does play a role. 

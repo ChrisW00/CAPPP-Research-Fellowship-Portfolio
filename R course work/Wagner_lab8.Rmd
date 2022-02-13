@@ -1,0 +1,144 @@
+---
+title: "Wagner_lab8"
+author: "Christopher Wagner"
+date: "1/11/2022"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r 1a}
+library(ggplot2)
+library(dplyr)
+library(tibble)
+library(lindia)
+
+
+democracy <- read.csv(file = "lab3_democracy(1).csv",
+header = TRUE,
+stringsAsFactors = FALSE,
+na.strings = ".")
+```
+
+
+#1b. Select one dependent variable from among the following variables: GDPW, EDT, CIVLIB, POLLIB.
+Select one single year to study. Create a new dataset with only your chosen year. How many rows do
+you have?
+```{r 1b}
+#Dependent Variable = CIVLIB
+YEAR87<- democracy%>% filter(YEAR== 1987)
+```
+My dependent variable is CIVLIB. In my new data set YEAR87, I have 132 observations/rows. 
+
+
+#1c. Next, use the drop.na( ) function in tidyr to remove all rows in your data that have missing
+information. How many rows do you have now?
+```{r 1c}
+YEAR87<- na.omit(YEAR87)
+```
+I have 88 rows/observations. 
+
+#2. Develop a research question that explains the variation in this dependent variable in your chosen
+year, and that can be answered using this data set. Articulate the independent (one variable),
+dependent (one variable from above list), and control variables (at least two), and briefly (2-3 sentences)
+describe your theory and your hypothesis. Lay out the null hypothesis.
+
+
+RQ: What effect does the amount of political freedom a country gives its citizen influence how much civil freedom its citizens have? 
+
+Independent Variable= Political Liberty (POLLIB)
+Dependent Variable= Civil Liberty (CIVLIB)
+Control Variables= percent of population that's catholic (CATH), percent of population that's Muslim (MOSLEM), former British Colony (BRITCOL), new country (NEWC). I am controlling for religion as many laws and leaders are influenced by dominant religions. I am also controlling for former British colonies and new countries as such States tend to be less stable and more restrictive as they are typically ran by authoritarian regimes that fluctuate in and out of power. I would include dictators but that datapoint is not included in the CSV chart that I have.  
+
+I theorize that a country that provides more political freedoms to it citizens will will score a higher civil liberty score than countries that do not because civil liberties are usually fought for through political freedoms, such as the freedom to assemble/ protest. Countries that restrict political freedoms are likely to provide less civil liberties as their citizens will not have as much input on government decisions or as many channels to formally voice their concerns. Since the two freedoms seem to go hand-in-hand I believe there will  be a positive linear relationship between the two variables. 
+
+H1(a): Countries with a high political liberty score will also have a high high civil liberty score.
+H1(b): Countries with a low political liberty score will also have a high low civil liberty score.
+H0: There is no relationship between a country's political score and its civil liberty score. 
+
+#3. Plot a scatter plot of the dependent and independent variables.
+```{r}
+Political_Civil_Graph<- ggplot(YEAR87, aes(x = POLLIB, y = CIVLIB)) +
+  geom_point(size= 2) +
+  geom_smooth(method = lm) +
+  theme_minimal() +
+  labs(y = "Civil Liberty Score", x = "Political Liberty Score", title = "Relationship Between Political Liberty & Civil Liberty") +
+  theme(plot.title = element_text(hjust = 0.5))+
+  scale_y_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7), labels = c("1", "2", "3", "4", "5", "6", "7"))+
+  scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7), labels = c("1", "2", "3", "4", "5", "6", "7"))
+
+Political_Civil_Graph
+```
+Based off this graph it appears that countries that have a lower political civil liberty score tend to have a higher civil liberty score. 
+
+#4. Test your research question using multivariate regression. Report the results of your model,
+including a discussion of the statistical significance and substantive effects of the independent and
+control variables on your dependent variable, and your adjusted R squared value. Do you have sufficient
+evidence to reject your null hypothesis? Why or why not?
+```{r}
+Liberty_multi_lm <- lm(CIVLIB ~ POLLIB + CATH + MOSLEM + BRITCOL + NEWC, data = YEAR87)
+
+summary(Liberty_multi_lm)
+```
+The residuals show pretty symmetrical distribution the median around my residuals. From the intercepts, we can see that the civil liberty rate is at 6.79 by itself when political liberties have a score of 0 which is significant considering that the T-value is at 20.888 and my P value is super close to 0 as it;s at 2e^-16. When political liberties increase by 1 unit the civil liberty score decreases by -.79 units. This indicates a negative relationship between the two variables and is a significant result because the p value is 2e^-16 which is super close to 0 and has a -17.618 standard deviations away from 0. I did okay choosing my controls, Catholicism and former British colonies did not play a significant role in a countries civil liberty score rate as they both had p-values above .05. However, New colonies and and Islam and Islam significantly influences a civil liberty score rates. This model has a residual standard error of .6394 which means the real Civil liberty score for a a country could vary +/- .6394 units. Based on this regression analysis we can explain about 90.4% of the civil liberty scores from Political Liberty scores, because the adjusted R square is 0.904. Since the F statistic is well above 1 at 164.8 we can see there is a pretty linear relationship between political and civil liberty scores. This relationship is significant because the p value is super close to 0 at 2.2e^-16. Based off all of this information I can confidently reject the null hypothesis as there appears to be a negative linear relationship between political and civil liberties.
+
+#5. Is Ordinary Least Squares (OLS) appropriate for your data? Consider the five assumptions of OLS, and present evidence that all five of those assumptions hold for your data. Or explain why OLS might not be the best approach if you find that some (or all) of the assumptions are violated.
+
+As I show and explain below, Ordinary Least Squares is not appropriate for my data as assumptions 3, 4, and 5 are violated. 
+
+Assumption 1: Relationship between Civil Liberty Scores and Political Liberty Scores is linear.
+```{r}
+OLS_Scatterplot<- ggplot(YEAR87, aes(x = POLLIB, y = CIVLIB)) +
+  geom_point(size= 2) +
+  geom_smooth(method = lm) +
+  theme_minimal() +
+  labs(y = "Civil Liberty Score", x = "Political Liberty Score", title = "Relationship Between Political Liberty & Civil Liberty") +
+  theme(plot.title = element_text(hjust = 0.5))+
+  scale_y_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7), labels = c("1", "2", "3", "4", "5", "6", "7"))+
+  scale_x_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7), labels = c("1", "2", "3", "4", "5", "6", "7"))
+
+OLS_Scatterplot
+```
+This plot satisfies the first OLS assumption about linear relationships because we can see the trend where Civil liberty scores decrease as political liberty scores increase which indicates a negative relationship. 
+
+Assumption 2:  homoscedasticity-- Are the variance of residuals equal across length of regression line?
+```{r}
+Residual_plot<-ggplot(Liberty_multi_lm) + 
+  geom_point(aes(x = .fitted, y = .resid)) + 
+  geom_hline(yintercept = 0, color = "blue") 
+Residual_plot
+```
+OLS assumption 2 on homoscedasticity is met. While there is a little bit of a pattern with the straight lines its something that is happening all over the graph and not just in a specific section (not clustering). I'm guessing my graph looks the way it does because both the political and civil liberty had scales of 1-7. Secondly all of these points are between -2 and 2 on the y axis which is great since the standard is to be between -10 and 10. 
+
+Assumption 3: Is Civil Liberty data normally dsitributed?
+```{r}
+assumption3<- ggplot(YEAR87, aes(x = CIVLIB)) +
+  geom_histogram() +
+  theme_minimal()
+assumption3
+
+```
+Assumption 3 of OLS is violated as this data is the inverse of a bell curve. 
+
+Assumption 4: IS there no correlation between Political Liberties and control variables?
+```{r}
+Liberty_cor<- subset(YEAR87, select = -c(CTYNAME, REGION, CIVLIB))
+
+cor(Liberty_cor)
+```
+
+Assumption 4 is violated because political liberty score also correlate with EDT (years of education of average person in workforce), GDPW (gross domes product per worker), NEWC (new country), and REG (don't know what this is as it's not listed in the assignment code book). 
+
+Assumption 5: Are there any major outliers in the data?
+```{r}
+gg_cooksd(Liberty_multi_lm, label = TRUE, show.threshold = TRUE,
+          threshold = "convention", scale.factor = 0.5)
+
+```
+OLS assumption 5 may be violated as observation 9 is three times the mean distance which indicates it is a potential outlier in this data.
+
+
