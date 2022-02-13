@@ -2,7 +2,7 @@ This repository contains most of the code that I used when collecting tweets. Pe
 
  
 
-##Sources 
+Sources 
 
 Cui, L., & Lee, D. (2020). Coaid: Covid-19 healthcare misinformation dataset. arXiv preprint arXiv:2006.00885. 
 
