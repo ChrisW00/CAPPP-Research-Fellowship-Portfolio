@@ -1,0 +1,550 @@
+---
+title: "Public Trust"
+author: "Christopher Wagner"
+date: "1/8/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+library(haven)
+library(ggplot2)
+#install.packages("lubridate")
+library(lubridate)
+#install.packages("car")
+library(car)
+library(magrittr)
+library(tidyr)
+library(readr)
+options(scipen = 999)
+```
+
+
+
+```{r load and combine} 
+w1<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W1.sav", encoding="latin1")
+w2<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W2.sav", encoding="latin1")
+w3<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W3.sav", encoding="latin1")
+w4<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W4.sav", encoding="latin1")
+w5<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W5.sav", encoding="latin1")
+w6<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W6.sav", encoding="latin1")
+w7<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W7.sav", encoding="latin1")
+w8<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W8.sav", encoding="latin1")
+w9<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W9.sav", encoding="latin1")
+w10<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W10.sav", encoding="latin1")
+w11<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W11.sav", encoding="latin1")
+w12<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W12.sav", encoding="latin1")
+w13<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W13.sav", encoding="latin1")
+w14<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W14.sav", encoding="latin1")
+w15<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W15.sav", encoding="latin1")
+w16<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W16.sav", encoding="latin1")
+w17<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W17.sav", encoding="latin1")
+w18<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W18.sav", encoding="latin1")
+w19<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W19.sav", encoding="latin1")
+w20<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W20.sav", encoding="latin1")
+w21<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W21.sav", encoding="latin1")
+w22<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W22.sav", encoding="latin1")
+w23<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W23.sav", encoding="latin1")
+w24<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W24.sav", encoding="latin1")
+w25<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W25.sav", encoding="latin1")
+w26<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W26.sav", encoding="latin1")
+w27<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W27.sav", encoding="latin1")
+w28<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W28.sav", encoding="latin1")
+w29<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W29.sav", encoding="latin1")
+w30<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W30.sav", encoding="latin1")
+w31<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W31.sav", encoding="latin1")
+w32<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W32.sav", encoding="latin1")
+w33<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W33.sav", encoding="latin1")
+w34<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W34.sav", encoding="latin1")
+w35<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W35.sav", encoding="latin1")
+w36<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W36.sav", encoding="latin1")
+w37<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W37.sav", encoding="latin1")
+w38<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W38.sav", encoding="latin1")
+w39<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W39.sav", encoding="latin1")
+w40<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W40.sav", encoding="latin1")
+w41<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W41.sav", encoding="latin1")
+w42<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W42.sav", encoding="latin1")
+w43<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W43.sav", encoding="latin1")
+w44<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W44.sav", encoding="latin1")
+w45<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W45.sav", encoding="latin1")
+w46<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W46.sav", encoding="latin1")
+w47<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W47.sav", encoding="latin1")
+w48<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W48.sav", encoding="latin1")
+w49<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W49.sav", encoding="latin1")
+w50<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W50.sav", encoding="latin1")
+w51<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W51.sav", encoding="latin1")
+w52<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W52.sav", encoding="latin1")
+w53<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W53.sav", encoding="latin1")
+w54<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W54.sav", encoding="latin1")
+w55<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W55.sav", encoding="latin1")
+w56<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W56.sav", encoding="latin1")
+w57<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W57.sav", encoding="latin1")
+w58<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W58.sav", encoding="latin1")
+w59<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Raw_data/Corona SAV files/W59.sav", encoding="latin1")
+
+w41<-subset(w41, select = -c(q119_17_, q120_17_))
+
+Survey_combined<-bind_rows(w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13,w14, w15, w16, w17, w18, w19, w20, w21, w22, w23, w24, w25, w26, w27, w28, w29, w30, w31, w32, w33, w34, w35, w36, w37, w38, w39, w40, w42, w43, w44, w45, w46, w47, w48, w49, w50, w51, w52, w53, w54, w55, w56, w57, w58, w59)
+
+Survey_combined1<-bind_rows(Survey_combined, w41)
+
+
+#write_sav(Survey_combined1, "C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Survey_combined.sav") 
+```
+
+```{r selecting questions}
+Survey_combinedR<- read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Survey_filtered.sav", encoding="latin1")
+
+#Survey_filtered<-subset(Survey_combinedR, select = c(respid, Q6, Q7_1, Q7_2, Q7_3, Q7_4, Q7_5, Q7_6, Q7_7, Q7_8, Q7_9, Q7_10, Q7_11, WAVE, ppage, ppeduc, ppeducat, ppethm, ppgender, ppincimp, ppmarit, ppstaten, ppwork, wave, Q11_1, Q12_1, Q12_2, Q12_3, Q14, QPID, POLIT200, Q7_12, xurbanicity, PPWORKA, Q11_5, Q4_10, Q11_6, Q11_7, Q11_8, xparty5, Q12_6, Q50_2, Q50_3, Q11_12, Q12_7, Q4_12, Q54_1, Q54_2, Q12_8, Q7_13, Q7_14, Q11_19, Q7_17, Q7_18, Q76, Q77, Q12_9, Q86_6, Q86_8, Q88_c, Q88_d, Q91, xparty4, Q93_1, Q93_2, Q93_3, Q93_4, Q93_5, Q93_6, Q93_7, Q94_1, Q94_2, Q94_3, Q94_4, Q98, Q88_f, q7_5, q7_6, q7_8, q7_13, q7_17, q7_18, q12_1, q12_2, q12_3, q105, q14, qpid, ppworka, wave, xurbanic, q11_1,  q11_23, q12_7, q12_8, q110_1, q110_2, q110_3, q110_4, q110_5, q4_10, q11_19, q7_1, q7_4, q7_10, q7_11, q7_12, q4_12, q94_1, q94_2, q94_3, q94_7, q12_5, q12_11, q126_1, q126_2, q126_3, q126_4, q126_5, q126_6, ppeduc5, ppinc7, ppmarit5, ppemploy, q54_1, q54_2, q156_1, q156_2, q156_3, q156_4, q156_5, q156_6, q156_7, q156_8, q156_9, q156_11, q4_21, q4_22, q93_6, q93_7, q93_10, q93_11, q93_12, q93_13, q159_1, q159_2, q159_3, q159_4, q159_5, q152_14, q159_6, q159_7, q110_7, q93_14, q93_15, q93_16, q167_3, q167_5, Q4_21, Q4_22, Q159_2)) 
+
+Surveyfiltered1<- subset(Survey_combinedR, select = c(wave, Q12_1, v7, Q12_2, v8, Q12_3, v9, ppage, ppeducat, ppethm, ppgender, ppincimp, ppstaten, QPID, xparty4, ppwork, PPWORKA, v12, Q14, v10))
+
+Sfd<- Surveyfiltered1%>% filter(wave >= 2, wave <=37)
+
+#Survey_filtered<- read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Survey_filtered.sav", encoding="latin1")
+
+#write_sav(Sfd, "C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Survey_trust-control.sav") 
+
+```
+
+```{r remove NA rows and check variance}
+sd<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Survey_trust-control (1).sav", encoding="latin1")
+
+fe<-subset(sd, select = c(wave, Fed_Trust, State_Trust, Local_Trust, ppage, ppeducat, ppethm, ppgender, ppincimp, ppstaten, PARTY, Employed, News_source))
+
+fe<-na.omit(fe)
+
+ze<- filter(fe, Fed_Trust > -1 , State_Trust > -1, Local_Trust > -1, ppage > -1, ppeducat > -1, ppethm > -1, ppgender > -1, ppincimp > -1, ppstaten > -1, PARTY > -1, Employed > -1, News_source > -1)
+
+Trust_index<- mutate(ze, Trust_Ix = (Fed_Trust + State_Trust + Local_Trust)/3)
+
+graph<- ggplot(Trust_index, aes(x= wave, fill= factor(Trust_Ix)))+geom_histogram(position = "identity", alpha= .5, binwidth = 1)
+
+graph
+
+result<- bartlett.test(Trust_Ix ~ wave, data = Trust_index )
+result
+
+#write_sav(Trust_index, "C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Trust_index.sav") 
+```
+
+```{r Add state names to numeric codes for reference purposes, and create date time intervals for respective survey waves}
+d<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/Trust_index.sav", encoding="latin1")
+survey_intervals<-read.csv("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/survey intervals.csv")
+w<- d%>% mutate(STATES = case_when(ppstaten == 1 ~ 'AL', 
+                                   ppstaten == 2 ~ 'AK',
+                                   ppstaten == 4 ~ 'AZ',
+                                   ppstaten == 5 ~ 'AR',
+                                   ppstaten == 6 ~ 'CA',
+                                   ppstaten == 8 ~ 'CO', 
+                                   ppstaten == 9 ~ 'CT',
+                                   ppstaten == 10 ~ 'DE',
+                                   ppstaten == 11 ~ 'DC',
+                                   ppstaten == 12 ~ 'FL',
+                                   ppstaten == 13 ~ 'GA', 
+                                   ppstaten == 15 ~ 'HI',
+                                   ppstaten == 16 ~ 'ID',
+                                   ppstaten == 17 ~ 'IL',
+                                   ppstaten == 18 ~ 'IN',
+                                   ppstaten == 19 ~ 'IA', 
+                                   ppstaten == 20 ~ 'KS',
+                                   ppstaten == 21 ~ 'KY',
+                                   ppstaten == 22 ~ 'LA',
+                                   ppstaten == 23 ~ 'ME',
+                                   ppstaten == 24 ~ 'MD', 
+                                   ppstaten == 25 ~ 'MA',
+                                   ppstaten == 26 ~ 'MI',
+                                   ppstaten == 27 ~ 'MN',
+                                   ppstaten == 28 ~ 'MS',
+                                   ppstaten == 29 ~ 'MO', 
+                                   ppstaten == 30 ~ 'MT',
+                                   ppstaten == 31 ~ 'NE',
+                                   ppstaten == 32 ~ 'NV',
+                                   ppstaten == 33 ~ 'NH',
+                                   ppstaten == 34 ~ 'NJ', 
+                                   ppstaten == 35 ~ 'NM',
+                                   ppstaten == 36 ~ 'NY',
+                                   ppstaten == 37 ~ 'NC',
+                                   ppstaten == 38 ~ 'ND',
+                                   ppstaten == 39 ~ 'OH', 
+                                   ppstaten == 40 ~ 'OK',
+                                   ppstaten == 41 ~ 'OR',
+                                   ppstaten == 42 ~ 'PA',
+                                   ppstaten == 44 ~ 'RI',
+                                   ppstaten == 45 ~ 'SC', 
+                                   ppstaten == 46 ~ 'SD',
+                                   ppstaten == 47 ~ 'TN',
+                                   ppstaten == 48 ~ 'TX',
+                                   ppstaten == 49 ~ 'UT',
+                                   ppstaten == 50 ~ 'VT', 
+                                   ppstaten == 51 ~ 'VA',
+                                   ppstaten == 53 ~ 'WA',
+                                   ppstaten == 54 ~ 'WV',
+                                   ppstaten == 55 ~ 'WI',
+                                   ppstaten == 56 ~ 'WY'
+                                   ))
+
+w<- w%>% mutate(STATE_wave = paste(STATES,"_", wave))
+
+
+w$Start_Date<- NA
+w$End_Date<- NA  
+survey_intervals<-survey_intervals%>% mutate(Start_Date= mdy(Start_Date), End_Date= mdy(End_Date))
+q<-survey_intervals%>% mutate(Survey_interval= interval(Start_Date, End_Date))
+e<- subset(q, select = Survey_interval)
+
+p<- merge(w, survey_intervals, all.x = TRUE, all.y = TRUE, copy= FALSE)
+L<- p%>% mutate(Start_Date= mdy(Start_Date), End_Date= mdy(End_Date))
+#write_sav(L, "C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/timeplay.sav") 
+q<-read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Coronavirus_index/timeplay.sav", encoding="latin1")
+
+q<- q%>% mutate(Start_Date= ymd(Start_Date), End_Date= ymd(End_Date))
+q<-q%>% mutate(Survey_interval= interval(Start_Date, End_Date))
+q<- q%>% mutate(Wave_Start= case_when(wave == 37 ~ '2021-01-29',
+                                      wave == 36 ~ '2021-01-22',
+                                      wave == 35 ~ '2021-01-08',
+                                      wave == 34 ~ '2020-12-18',
+                                      wave == 33 ~ '2020-12-11',
+                                      wave == 32 ~ '2020-12-04',
+                                      wave == 31 ~ '2020-11-20',
+                                      wave == 30 ~ '2020-11-13',
+                                      wave == 29 ~ '2020-10-23',
+                                      wave == 28 ~ '2020-10-16',
+                                      wave == 27 ~ '2020-10-01',
+                                      wave == 26 ~ '2020-09-24',
+                                      wave == 25 ~ '2020-09-18',
+                                      wave == 24 ~ '2020-09-11',
+                                      wave == 23 ~ '2020-08-28',
+                                      wave == 22 ~ '2020-08-21',
+                                      wave == 21 ~ '2020-08-14',
+                                      wave == 20 ~ '2020-08-07',
+                                      wave == 19 ~ '2020-07-31',
+                                      wave == 18 ~ '2020-07-24',
+                                      wave == 17 ~ '2020-07-17',
+                                      wave == 16 ~ '2020-07-10',
+                                      wave == 15 ~ '2020-06-26',
+                                      wave == 14 ~ '2020-06-19',
+                                      wave == 13 ~ '2020-06-12',
+                                      wave == 12 ~ '2020-06-05',
+                                      wave == 11 ~ '2020-05-29',
+                                      wave == 10 ~ '2020-05-15',
+                                      wave == 9 ~ '2020-05-08',
+                                      wave == 8 ~ '2020-05-01',
+                                      wave == 7 ~ '2020-04-24',
+                                      wave == 6 ~ '2020-04-17',
+                                      wave == 5 ~ '2020-04-10',
+                                      wave == 4 ~ '2020-04-03',
+                                      wave == 3 ~ '2020-03-27',
+                                      wave == 2 ~ '2020-03-20'))
+
+q<- q%>% mutate(Wave_End= case_when(wave == 37 ~ '2021-02-01',
+                                      wave == 36 ~ '2021-01-25',
+                                      wave == 35 ~ '2021-01-11',
+                                      wave == 34 ~ '2020-12-21',
+                                      wave == 33 ~ '2020-12-14',
+                                      wave == 32 ~ '2020-12-07',
+                                      wave == 31 ~ '2020-11-23',
+                                      wave == 30 ~ '2020-11-16',
+                                      wave == 29 ~ '2020-10-26',
+                                      wave == 28 ~ '2020-10-19',
+                                      wave == 27 ~ '2020-10-05',
+                                      wave == 26 ~ '2020-09-27',
+                                      wave == 25 ~ '2020-09-21',
+                                      wave == 24 ~ '2020-09-14',
+                                      wave == 23 ~ '2020-08-31',
+                                      wave == 22 ~ '2020-08-24',
+                                      wave == 21 ~ '2020-08-17',
+                                      wave == 20 ~ '2020-08-10',
+                                      wave == 19 ~ '2020-08-03',
+                                      wave == 18 ~ '2020-07-27',
+                                      wave == 17 ~ '2020-07-20',
+                                      wave == 16 ~ '2020-07-13',
+                                      wave == 15 ~ '2020-06-29',
+                                      wave == 14 ~ '2020-06-22',
+                                      wave == 13 ~ '2020-06-15',
+                                      wave == 12 ~ '2020-06-08',
+                                      wave == 11 ~ '2020-06-01',
+                                      wave == 10 ~ '2020-05-18',
+                                      wave == 9 ~ '2020-05-11',
+                                      wave == 8 ~ '2020-05-04',
+                                      wave == 7 ~ '2020-04-27',
+                                      wave == 6 ~ '2020-04-20',
+                                      wave == 5 ~ '2020-04-13',
+                                      wave == 4 ~ '2020-04-06',
+                                      wave == 3 ~ '2020-03-30',
+                                      wave == 2 ~ '2020-03-23'))
+
+#q<- q%>% mutate(Wave_Start= ymd(Wave_Start), Wave_End= ymd(Wave_End))
+q<- q%>% mutate(Wave_Interval= interval(Wave_Start, Wave_End))
+
+q<- q%>% mutate(Wave_Intervals= case_when(wave == 37 ~ '2021-01-29 UTC--2021-02-01 UTC',
+                                      wave == 36 ~ '2021-01-22 UTC--2021-01-25 UTC',
+                                      wave == 35 ~ '2021-01-08 UTC--2021-01-11 UTC',
+                                      wave == 34 ~ '2020-12-18 UTC--2020-12-21 UTC',
+                                      wave == 33 ~ '2020-12-11 UTC--2020-12-14 UTC',
+                                      wave == 32 ~ '2020-12-04 UTC--2020-12-07 UTC',
+                                      wave == 31 ~ '2020-11-20 UTC--2020-11-23 UTC',
+                                      wave == 30 ~ '2020-11-13 UTC--2020-11-16 UTC',
+                                      wave == 29 ~ '2020-10-23 UTC--2020-10-26 UTC',
+                                      wave == 28 ~ '2020-10-16 UTC--2020-10-19 UTC',
+                                      wave == 27 ~ '2020-10-01 UTC--2020-10-05 UTC',
+                                      wave == 26 ~ '2020-09-24 UTC--2020-09-27 UTC',
+                                      wave == 25 ~ '2020-09-18 UTC--2020-09-21 UTC',
+                                      wave == 24 ~ '2020-09-11 UTC--2020-09-14 UTC',
+                                      wave == 23 ~ '2020-08-28 UTC--2020-08-31 UTC',
+                                      wave == 22 ~ '2020-08-21 UTC--2020-08-24 UTC',
+                                      wave == 21 ~ '2020-08-14 UTC--2020-08-17 UTC',
+                                      wave == 20 ~ '2020-08-07 UTC--2020-08-10 UTC',
+                                      wave == 19 ~ '2020-07-31 UTC--2020-08-03 UTC',
+                                      wave == 18 ~ '2020-07-24 UTC--2020-07-27 UTC',
+                                      wave == 17 ~ '2020-07-17 UTC--2020-07-20 UTC',
+                                      wave == 16 ~ '2020-07-10 UTC--2020-07-13 UTC',
+                                      wave == 15 ~ '2020-06-26 UTC--2020-06-29 UTC',
+                                      wave == 14 ~ '2020-06-19 UTC--2020-06-22 UTC',
+                                      wave == 13 ~ '2020-06-12 UTC--2020-06-15 UTC',
+                                      wave == 12 ~ '2020-06-05 UTC--2020-06-08 UTC',
+                                      wave == 11 ~ '2020-05-29 UTC--2020-06-01 UTC',
+                                      wave == 10 ~ '2020-05-15 UTC--2020-05-18 UTC',
+                                      wave == 9 ~ '2020-05-08 UTC--2020-05-11 UTC',
+                                      wave == 8 ~ '2020-05-01 UTC--2020-05-04 UTC',
+                                      wave == 7 ~ '2020-04-24 UTC--2020-04-27 UTC',
+                                      wave == 6 ~ '2020-04-17 UTC--2020-04-20 UTC',
+                                      wave == 5 ~ '2020-04-10 UTC--2020-04-13 UTC',
+                                      wave == 4 ~ '2020-04-03 UTC--2020-04-06 UTC',
+                                      wave == 3 ~ '2020-03-27 UTC--2020-03-30 UTC',
+                                      wave == 2 ~ '2020-03-20 UTC--2020-03-23 UTC'))
+
+
+q<- subset(q, select = -c(Start_Date, End_Date, Survey_interval, Wave_Interval))
+
+#write_sav(q, "C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Trust Index/Trust_index2.sav") 
+```
+
+```{r national GDP, Unemployment, covid cases & deaths, state govt response median index}
+p<- read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Trust Index/Trust_index2.sav", encoding="latin1")
+
+p<- p%>% mutate(GDP= case_when(Wave_Intervals == '2021-01-29 UTC--2021-02-01 UTC' ~ 117.237,
+                                      Wave_Intervals == '2021-01-22 UTC--2021-01-25 UTC' ~ 117.237,
+                                      Wave_Intervals == '2021-01-08 UTC--2021-01-11 UTC' ~117.237,
+                                      Wave_Intervals == '2020-12-18 UTC--2020-12-21 UTC' ~ 115.466,
+                                      Wave_Intervals == '2020-12-11 UTC--2020-12-14 UTC' ~ 115.466, 
+                                      Wave_Intervals == '2020-12-04 UTC--2020-12-07 UTC' ~ 115.466,
+                                      Wave_Intervals == '2020-11-20 UTC--2020-11-23 UTC' ~ 115.466,
+                                      Wave_Intervals == '2020-11-13 UTC--2020-11-16 UTC' ~ 115.466,
+                                      Wave_Intervals == '2020-10-23 UTC--2020-10-26 UTC' ~ 115.466,
+                                      Wave_Intervals == '2020-10-16 UTC--2020-10-19 UTC' ~ 115.466,
+                                      Wave_Intervals == '2020-10-01 UTC--2020-10-05 UTC' ~ 115.466,
+                                      Wave_Intervals == '2020-09-24 UTC--2020-09-27 UTC' ~ 114.192,
+                                      Wave_Intervals == '2020-09-18 UTC--2020-09-21 UTC' ~ 114.192,
+                                      Wave_Intervals == '2020-09-11 UTC--2020-09-14 UTC' ~ 114.192,
+                                      Wave_Intervals == '2020-08-28 UTC--2020-08-31 UTC' ~ 114.192,
+                                      Wave_Intervals == '2020-08-21 UTC--2020-08-24 UTC' ~ 114.192,
+                                      Wave_Intervals == '2020-08-14 UTC--2020-08-17 UTC' ~ 114.192,
+                                      Wave_Intervals == '2020-08-07 UTC--2020-08-10 UTC' ~ 114.192,
+                                      Wave_Intervals == '2020-07-31 UTC--2020-08-03 UTC' ~ 114.192,
+                                      Wave_Intervals == '2020-07-24 UTC--2020-07-27 UTC' ~ 114.192,
+                                      Wave_Intervals == '2020-07-17 UTC--2020-07-20 UTC' ~ 114.192,
+                                      Wave_Intervals == '2020-07-10 UTC--2020-07-13 UTC' ~ 114.192,
+                                      Wave_Intervals == '2020-06-26 UTC--2020-06-29 UTC' ~ 106.178,
+                                      Wave_Intervals == '2020-06-19 UTC--2020-06-22 UTC' ~ 106.178,
+                                      Wave_Intervals == '2020-06-12 UTC--2020-06-15 UTC' ~ 106.178,
+                                      Wave_Intervals == '2020-06-05 UTC--2020-06-08 UTC' ~ 106.178,
+                                      Wave_Intervals == '2020-05-29 UTC--2020-06-01 UTC' ~ 106.178,
+                                      Wave_Intervals == '2020-05-15 UTC--2020-05-18 UTC' ~ 106.178,
+                                      Wave_Intervals == '2020-05-08 UTC--2020-05-11 UTC' ~ 106.178,
+                                      Wave_Intervals == '2020-05-01 UTC--2020-05-04 UTC' ~ 106.178,
+                                      Wave_Intervals == '2020-04-24 UTC--2020-04-27 UTC' ~ 106.178,
+                                      Wave_Intervals == '2020-04-17 UTC--2020-04-20 UTC' ~ 106.178,
+                                      Wave_Intervals == '2020-04-10 UTC--2020-04-13 UTC' ~ 106.178,
+                                      Wave_Intervals == '2020-04-03 UTC--2020-04-06 UTC' ~ 106.178,
+                                      Wave_Intervals == '2020-03-27 UTC--2020-03-30 UTC' ~ 116.599,
+                                      Wave_Intervals == '2020-03-20 UTC--2020-03-23 UTC' ~ 116.599))
+
+
+p<- p%>% mutate(National_Unemployment_rate= case_when(Wave_Intervals == '2021-01-29 UTC--2021-02-01 UTC' ~ 6.4,
+                                      Wave_Intervals == '2021-01-22 UTC--2021-01-25 UTC' ~ 6.4,
+                                      Wave_Intervals == '2021-01-08 UTC--2021-01-11 UTC' ~6.4,
+                                      Wave_Intervals == '2020-12-18 UTC--2020-12-21 UTC' ~ 6.7,
+                                      Wave_Intervals == '2020-12-11 UTC--2020-12-14 UTC' ~ 6.7, 
+                                      Wave_Intervals == '2020-12-04 UTC--2020-12-07 UTC' ~ 6.7,
+                                      Wave_Intervals == '2020-11-20 UTC--2020-11-23 UTC' ~ 6.7,
+                                      Wave_Intervals == '2020-11-13 UTC--2020-11-16 UTC' ~ 6.7,
+                                      Wave_Intervals == '2020-10-23 UTC--2020-10-26 UTC' ~ 6.9,
+                                      Wave_Intervals == '2020-10-16 UTC--2020-10-19 UTC' ~ 6.9,
+                                      Wave_Intervals == '2020-10-01 UTC--2020-10-05 UTC' ~ 6.9,
+                                      Wave_Intervals == '2020-09-24 UTC--2020-09-27 UTC' ~ 7.9,
+                                      Wave_Intervals == '2020-09-18 UTC--2020-09-21 UTC' ~ 7.9,
+                                      Wave_Intervals == '2020-09-11 UTC--2020-09-14 UTC' ~ 7.9,
+                                      Wave_Intervals == '2020-08-28 UTC--2020-08-31 UTC' ~ 8.4,
+                                      Wave_Intervals == '2020-08-21 UTC--2020-08-24 UTC' ~ 8.4,
+                                      Wave_Intervals == '2020-08-14 UTC--2020-08-17 UTC' ~ 8.4,
+                                      Wave_Intervals == '2020-08-07 UTC--2020-08-10 UTC' ~ 8.4,
+                                      Wave_Intervals == '2020-07-31 UTC--2020-08-03 UTC' ~ 10.2,
+                                      Wave_Intervals == '2020-07-24 UTC--2020-07-27 UTC' ~ 10.2,
+                                      Wave_Intervals == '2020-07-17 UTC--2020-07-20 UTC' ~ 10.2,
+                                      Wave_Intervals == '2020-07-10 UTC--2020-07-13 UTC' ~ 10.2,
+                                      Wave_Intervals == '2020-06-26 UTC--2020-06-29 UTC' ~ 11.0,
+                                      Wave_Intervals == '2020-06-19 UTC--2020-06-22 UTC' ~ 11.0,
+                                      Wave_Intervals == '2020-06-12 UTC--2020-06-15 UTC' ~ 11.0,
+                                      Wave_Intervals == '2020-06-05 UTC--2020-06-08 UTC' ~ 11.0,
+                                      Wave_Intervals == '2020-05-29 UTC--2020-06-01 UTC' ~ 13.2,
+                                      Wave_Intervals == '2020-05-15 UTC--2020-05-18 UTC' ~ 13.2,
+                                      Wave_Intervals == '2020-05-08 UTC--2020-05-11 UTC' ~ 13.2,
+                                      Wave_Intervals == '2020-05-01 UTC--2020-05-04 UTC' ~ 13.2,
+                                      Wave_Intervals == '2020-04-24 UTC--2020-04-27 UTC' ~ 14.7,
+                                      Wave_Intervals == '2020-04-17 UTC--2020-04-20 UTC' ~ 14.7,
+                                      Wave_Intervals == '2020-04-10 UTC--2020-04-13 UTC' ~ 14.7,
+                                      Wave_Intervals == '2020-04-03 UTC--2020-04-06 UTC' ~ 14.7,
+                                      Wave_Intervals == '2020-03-27 UTC--2020-03-30 UTC' ~ 4.4,
+                                      Wave_Intervals == '2020-03-20 UTC--2020-03-23 UTC' ~ 4.4))
+
+p<- p%>% mutate(National_Cases= case_when(Wave_Intervals == '2021-01-29 UTC--2021-02-01 UTC' ~ 26445435,
+                                          Wave_Intervals == '2021-01-22 UTC--2021-01-25 UTC' ~ 25421759,
+                                      Wave_Intervals == '2021-01-08 UTC--2021-01-11 UTC' ~ 22775307,
+                                      Wave_Intervals == '2020-12-18 UTC--2020-12-21 UTC' ~ 18199258,
+                                      Wave_Intervals == '2020-12-11 UTC--2020-12-14 UTC' ~ 16672720,
+                                      Wave_Intervals == '2020-12-04 UTC--2020-12-07 UTC' ~ 15136219,
+                                      Wave_Intervals == '2020-11-20 UTC--2020-11-23 UTC' ~ 12548120,
+                                      Wave_Intervals == '2020-11-13 UTC--2020-11-16 UTC' ~ 11316582,
+                                      Wave_Intervals == '2020-10-23 UTC--2020-10-26 UTC' ~ 8731741,
+                                      Wave_Intervals == '2020-10-16 UTC--2020-10-19 UTC' ~ 8235649,
+                                      Wave_Intervals == '2020-10-01 UTC--2020-10-05 UTC' ~ 7459194,
+                                      Wave_Intervals == '2020-09-24 UTC--2020-09-27 UTC' ~ 7119404,
+                                      Wave_Intervals == '2020-09-18 UTC--2020-09-21 UTC' ~ 6861284,
+                                      Wave_Intervals == '2020-09-11 UTC--2020-09-14 UTC' ~ 6556144,
+                                      Wave_Intervals == '2020-08-28 UTC--2020-08-31 UTC' ~ 6025528,
+                                      Wave_Intervals == '2020-08-21 UTC--2020-08-24 UTC' ~ 5736339,
+                                      Wave_Intervals == '2020-08-14 UTC--2020-08-17 UTC' ~ 5441942,
+                                      Wave_Intervals == '2020-08-07 UTC--2020-08-10 UTC' ~ 5094516,
+                                      Wave_Intervals == '2020-07-31 UTC--2020-08-03 UTC' ~ 4716831,
+                                      Wave_Intervals == '2020-07-24 UTC--2020-07-27 UTC' ~ 4297906,
+                                      Wave_Intervals == '2020-07-17 UTC--2020-07-20 UTC' ~ 3840208,
+                                      Wave_Intervals == '2020-07-10 UTC--2020-07-13 UTC' ~ 3372055,
+                                      Wave_Intervals == '2020-06-26 UTC--2020-06-29 UTC' ~ 2594175,
+                                      Wave_Intervals == '2020-06-19 UTC--2020-06-22 UTC' ~ 2310901,
+                                      Wave_Intervals == '2020-06-12 UTC--2020-06-15 UTC' ~ 2109886,
+                                      Wave_Intervals == '2020-06-05 UTC--2020-06-08 UTC' ~ 1960103,
+                                      Wave_Intervals == '2020-05-29 UTC--2020-06-01 UTC' ~ 1816110,
+                                      Wave_Intervals == '2020-05-15 UTC--2020-05-18 UTC' ~ 1518111,
+                                      Wave_Intervals == '2020-05-08 UTC--2020-05-11 UTC' ~ 1358174,
+                                      Wave_Intervals == '2020-05-01 UTC--2020-05-04 UTC' ~ 1192024,
+                                      Wave_Intervals == '2020-04-24 UTC--2020-04-27 UTC' ~ 1000822,
+                                      Wave_Intervals == '2020-04-17 UTC--2020-04-20 UTC' ~ 799022,
+                                      Wave_Intervals == '2020-04-10 UTC--2020-04-13 UTC' ~ 598017,
+                                      Wave_Intervals == '2020-04-03 UTC--2020-04-06 UTC' ~ 382661,
+                                      Wave_Intervals == '2020-03-27 UTC--2020-03-30 UTC' ~ 165698,
+                                      Wave_Intervals == '2020-03-20 UTC--2020-03-23 UTC' ~  46096))
+
+
+p<- p%>% mutate(National_Deaths= case_when(Wave_Intervals == '2021-01-29 UTC--2021-02-01 UTC' ~ 450183,
+                                      Wave_Intervals == '2021-01-22 UTC--2021-01-25 UTC' ~ 427989,
+                                      Wave_Intervals == '2021-01-08 UTC--2021-01-11 UTC' ~ 382905,
+                                      Wave_Intervals == '2020-12-18 UTC--2020-12-21 UTC' ~ 324526,
+                                      Wave_Intervals == '2020-12-11 UTC--2020-12-14 UTC' ~ 305114,
+                                      Wave_Intervals == '2020-12-04 UTC--2020-12-07 UTC' ~ 287142,
+                                      Wave_Intervals == '2020-11-20 UTC--2020-11-23 UTC' ~ 259762,
+                                      Wave_Intervals == '2020-11-13 UTC--2020-11-16 UTC' ~ 248348,
+                                      Wave_Intervals == '2020-10-23 UTC--2020-10-26 UTC' ~ 226472,
+                                      Wave_Intervals == '2020-10-16 UTC--2020-10-19 UTC' ~ 220611,
+                                      Wave_Intervals == '2020-10-01 UTC--2020-10-05 UTC' ~ 210174,
+                                      Wave_Intervals == '2020-09-24 UTC--2020-09-27 UTC' ~ 204705,
+                                      Wave_Intervals == '2020-09-18 UTC--2020-09-21 UTC' ~ 199688,
+                                      Wave_Intervals == '2020-09-11 UTC--2020-09-14 UTC' ~ 194311,
+                                      Wave_Intervals == '2020-08-28 UTC--2020-08-31 UTC' ~ 183383,
+                                      Wave_Intervals == '2020-08-21 UTC--2020-08-24 UTC' ~ 176989,
+                                      Wave_Intervals == '2020-08-14 UTC--2020-08-17 UTC' ~ 170355,
+                                      Wave_Intervals == '2020-08-07 UTC--2020-08-10 UTC' ~ 163274,
+                                      Wave_Intervals == '2020-07-31 UTC--2020-08-03 UTC' ~ 155963,
+                                      Wave_Intervals == '2020-07-24 UTC--2020-07-27 UTC' ~ 148694,
+                                      Wave_Intervals == '2020-07-17 UTC--2020-07-20 UTC' ~ 141590,
+                                      Wave_Intervals == '2020-07-10 UTC--2020-07-13 UTC' ~ 135966,
+                                      Wave_Intervals == '2020-06-26 UTC--2020-06-29 UTC' ~ 126806,
+                                      Wave_Intervals == '2020-06-19 UTC--2020-06-22 UTC' ~ 122952,
+                                      Wave_Intervals == '2020-06-12 UTC--2020-06-15 UTC' ~ 118825,
+                                      Wave_Intervals == '2020-06-05 UTC--2020-06-08 UTC' ~ 113926,
+                                      Wave_Intervals == '2020-05-29 UTC--2020-06-01 UTC' ~ 108445,
+                                      Wave_Intervals == '2020-05-15 UTC--2020-05-18 UTC' ~ 94110,
+                                      Wave_Intervals == '2020-05-08 UTC--2020-05-11 UTC' ~ 84093,
+                                      Wave_Intervals == '2020-05-01 UTC--2020-05-04 UTC' ~ 72365,
+                                      Wave_Intervals == '2020-04-24 UTC--2020-04-27 UTC' ~ 59330,
+                                      Wave_Intervals == '2020-04-17 UTC--2020-04-20 UTC' ~ 45179,
+                                      Wave_Intervals == '2020-04-10 UTC--2020-04-13 UTC' ~ 29657,
+                                      Wave_Intervals == '2020-04-03 UTC--2020-04-06 UTC' ~ 14523,
+                                      Wave_Intervals == '2020-03-27 UTC--2020-03-30 UTC' ~ 4280,
+                                      Wave_Intervals == '2020-03-20 UTC--2020-03-23 UTC' ~ 790))
+
+p<- p%>% mutate(state_response= case_when(STATES == 'AK' ~ 59.90,
+                                          STATES == 'AL' ~ 53.65,
+                                          STATES == 'AR' ~ 59.90,
+                                          STATES == 'AZ' ~ 58.59,
+                                          STATES == 'CA' ~ 69.53,
+                                          STATES == 'CO' ~ 61.20,
+                                          STATES == 'CT' ~ 70.83,
+                                          STATES == 'DC' ~ 66.56,
+                                          STATES == 'DE' ~ 65.10,
+                                          STATES == 'FL' ~ 60.42,
+                                          STATES == 'GA' ~ 61.59,
+                                          STATES == 'HI' ~ 69.53,
+                                          STATES == 'IA' ~ 55.21,
+                                          STATES == 'ID' ~ 50.99,
+                                          STATES == 'IL' ~ 58.33,
+                                          STATES == 'IN' ~ 55.62,
+                                          STATES == 'KS' ~ 54.95,
+                                          STATES == 'KY' ~ 64.58,
+                                          STATES == 'LA' ~ 57.81,
+                                          STATES == 'MA' ~ 64.06,
+                                          STATES == 'MD' ~ 65.36,
+                                          STATES == 'ME' ~ 64.06,
+                                          STATES == 'MI' ~ 59.11,
+                                          STATES == 'MN' ~ 55.99,
+                                          STATES == 'MO' ~ 50.52,
+                                          STATES == 'MS' ~ 56.77,
+                                          STATES == 'MT' ~ 58.07,
+                                          STATES == 'NC' ~ 62.50,
+                                          STATES == 'ND' ~ 47.03,
+                                          STATES == 'NE' ~ 58.70,
+                                          STATES == 'NH' ~ 51.82,
+                                          STATES == 'NJ' ~ 64.06,
+                                          STATES == 'NM' ~ 69.79,
+                                          STATES == 'NV' ~ 55.32,
+                                          STATES == 'NY' ~ 75.16,
+                                          STATES == 'OH' ~ 61.35,
+                                          STATES == 'OK' ~ 47.29,
+                                          STATES == 'OR' ~ 60.42,
+                                          STATES == 'PA' ~ 63.54,
+                                          STATES == 'RI' ~ 71.88,
+                                          STATES == 'SC' ~ 55.99,
+                                          STATES == 'SD' ~ 45.99,
+                                          STATES == 'TN' ~ 58.31,
+                                          STATES == 'TX' ~ 52.53,
+                                          STATES == 'UT' ~ 48.70,
+                                          STATES == 'VA' ~ 56.25,
+                                          STATES == 'VT' ~ 69.27,
+                                          STATES == 'WA' ~ 61.20,
+                                          STATES == 'WI' ~ 54.69,
+                                          STATES == 'WV' ~ 57.09,
+                                          STATES == 'WY' ~ 59.90))
+#write_sav(p, "C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Trust Index/Trust_index3.sav") 
+```
+Please note that the quarterly national real GDP quantity index was manually inputted from the [Bureau of Economic Analysis](https://apps.bea.gov/iTable/iTable.cfm?reqid=19&step=3&isuri=1&nipa_table_list=6&categories=survey) and that the monthly national unemployment rate was also manually inputted from the [Bureau of Labor Statistics](https://data.bls.gov/pdq/SurveyOutputServlet) series id LNS14000000.
+
+The median state response index, national COVID deaths and cases, were taken from Excel spreadsheets and manually put into this dataset. I used Excel to quickly figure out the median for the state response index. These are all variables that I am controlling for.
+
+```{r }
+Trust_index3<- read_sav("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Trust Index/Trust_index3.sav")
+UEI <- read_csv("C:/Users/wagne/OneDrive - UW/CAPPP Program/R/Twitter/CIP/UEI.csv", col_types = cols(...1 = col_skip(), 
+    wave = col_number(), rightT = col_number(), 
+    leftT = col_number(), rightE = col_number(), 
+    leftE = col_number(), right_UEI = col_number(), 
+    left_UEI = col_number()))
+
+dataset<- full_join(Trust_index3, UEI, by = "wave")
+
+#write.csv(dataset, "full_dataset.csv")
+
+```
+
